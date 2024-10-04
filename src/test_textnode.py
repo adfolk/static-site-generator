@@ -26,6 +26,12 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("This is a text node", "bold", "https://google.com")
         self.assertEqual(node, node2)
 
+    def check_img(self):
+        txtnode = TextNode(text="Italian Trulli", text_type="image", url="pic_trulli.jpg")
+        test_html = text_node_to_html_node(txtnode)
+        expected_output = '<img src="pic_trulli.jpg" alt="Italian Trulli"></img>'
+        self.assertEqual(test_html.to_html, expected_output)
+
     
 if __name__ == "__main__":
     unittest.main()
