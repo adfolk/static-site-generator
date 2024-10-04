@@ -28,3 +28,33 @@ class TextNode():
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
 
 
+def text_node_to_html_node(text_node):
+
+    # Plain text leaf node
+    if text_node.text_type == text_type_text:
+        return LeafNode(tag=None, value=text_node.text)
+
+    # Bold text leaf node
+    if text_node.text_type == text_type_bold:
+        return LeafNode(tag="b", value=text_node.text)
+
+    # Italic text leaf node
+    if text_node.text_type == text_type_italic:
+        return LeafNode(tag="i", value=text_node.text)
+
+    # Code block leaf node
+    if text_node.text_type == text_type_code:
+        return LeafNode(tag="code", value=text_node.text)
+
+    # Link leaf node
+    if text_node.text_type == text_type_code:
+        props = {'href': text_node.url}
+        return LeafNode(tag="a", value=text_node.text, props=props)
+
+    # Image leaf node
+    if text_node.text_type == text_type_image:
+        props = {'src': text_node.url, 'alt': text_node.text}
+        return LeafNode(tag="img", value='', props=props)
+        
+    raise Exception('Text type must be one of: text, bold, italic, code, link, image')
+
