@@ -30,7 +30,7 @@ class TextNode():
 # TextNode processing functions
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
-    # TODO: handle cases where text begins with delimiter
+    # TODO: handle invalid markdown
     # For each node in the list of old_nodes, split into new nodes based on the delimiter
     new_nodes = []
     def splitter(node):
@@ -60,10 +60,6 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                     leftover_node = TextNode(text=text_split[2], text_type=text_type)
                     splitter(leftover_node)
 
-        # base case: if node.partition == node.text, return
-        #elif split[1] == '':
-            #return
-
         else:
             textnode = TextNode(text=split[0], text_type=text_type_text)
             new_nodes.append(textnode)
@@ -83,7 +79,10 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                     splitter(alt_leftover_node)
 
     for node in old_nodes:
-        splitter(node)
+        if node.text_type != text_type_text:
+            new_nodes.append(node)
+        else:
+            splitter(node)
     return new_nodes
 
 # Functions for converting TextNodes to HTMLNodes
