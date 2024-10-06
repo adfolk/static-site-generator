@@ -27,6 +27,66 @@ class TextNode():
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
 
+# TextNode processing functions
+
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    # TODO: handle cases where text begins with delimiter
+    # For each node in the list of old_nodes, split into new nodes based on the delimiter
+    new_nodes = []
+    def splitter(node):
+        # split on the first instance of the delimiter using str.partition(delimiter)
+        nonlocal new_nodes
+        nonlocal delimiter
+        nonlocal text_type
+
+        split = node.text.partition(delimiter) # result is a tuple
+
+        if split[0] == '': # this means the string starts with the delimiter
+            new_split = split[2].partition(delimiter)
+            textnode = TextNode(text=new_split[0], text_type=text_type)
+            new_nodes.append(textnode)
+
+            if new_split[2] == '':
+                return
+            else:
+                remaining_string = new_split[2]
+                text_split = remaining_string.partition(delimiter)
+                plaintext_node = TextNode(text=text_split[0], text_type=text_type_text)
+                new_nodes.append(plaintext_node)
+
+                if text_split[1] == '':
+                    return
+                else:
+                    leftover_node = TextNode(text=text_split[2], text_type=text_type)
+                    splitter(leftover_node)
+
+        # base case: if node.partition == node.text, return
+        #elif split[1] == '':
+            #return
+
+        else:
+            textnode = TextNode(text=split[0], text_type=text_type_text)
+            new_nodes.append(textnode)
+
+            if split[1] == '':
+                return
+            else:
+                remaining_string = split[2]
+                format_split = remaining_string.partition(delimiter)
+                format_node = TextNode(text=format_split[0], text_type=text_type)
+                new_nodes.append(format_node)
+
+                if format_split[1] == '':
+                    return
+                else:
+                    alt_leftover_node = TextNode(text=format_split[2], text_type=text_type_text)
+                    splitter(alt_leftover_node)
+
+    for node in old_nodes:
+        splitter(node)
+    return new_nodes
+
+# Functions for converting TextNodes to HTMLNodes
 
 def text_node_to_html_node(text_node):
 

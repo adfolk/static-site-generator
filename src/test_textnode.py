@@ -1,8 +1,9 @@
 import unittest
 
 from textnode import *
+from htmlnode import *
 
-# 4 tests
+# 5 tests
 
 
 class TestTextNode(unittest.TestCase):
@@ -26,18 +27,68 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("This is a text node", "bold", "https://google.com")
         self.assertEqual(node, node2)
 
-    def check_img(self):
+    def test_convert_img_props(self):
+        txtnode = TextNode(text="Italian Trulli", text_type="image", url="pic_trulli.jpg")
+        test_html = text_node_to_html_node(txtnode)
+        self.assertEqual(test_html.props, {'src': 'pic_trulli.jpg', 'alt': 'Italian Trulli'})
+
+    def test_convert_img_io(self):
         txtnode = TextNode(text="Italian Trulli", text_type="image", url="pic_trulli.jpg")
         test_html = text_node_to_html_node(txtnode)
         expected_output = '<img src="pic_trulli.jpg" alt="Italian Trulli"></img>'
-        self.assertEqual(test_html.to_html, expected_output)
+        func_out = test_html.to_html()
+        self.assertEqual(func_out, expected_output)
 
-    
+    def test_node_splitter(self):
+        unsplit_node = TextNode(text= 'This is an *italic* text *sample* with *too many* italics. Ironically, *italics* was not italicized.', text_type=text_type_italic)
+        list_to_split = [unsplit_node]
+        expected_output = [
+                TextNode(text='This is an ', text_type=text_type_text),
+                TextNode(text='italic', text_type=text_type_italic),
+                TextNode(text=' text ', text_type=text_type_text),
+                TextNode(text='sample', text_type=text_type_italic),
+                TextNode(text=' with ', text_type=text_type_text),
+                TextNode(text='too many', text_type=text_type_italic),
+                TextNode(text=' italics. Ironically, ', text_type=text_type_text),
+                TextNode(text='italics', text_type=text_type_italic),
+                TextNode(text=' was not italicized.', text_type=text_type_text),
+        ]
+
+        splits = split_nodes_delimiter(list_to_split, '*', text_type_italic)
+        print('\nBegin multi italic function test\n')
+        for node in splits:
+            print(node.__repr__())
+
+        print('\nEnd of multi italic function test\n')
+
+        for node in expected_output:
+            print(node.__repr__())
+
+
+
+        self.assertEqual(split_nodes_delimiter(list_to_split, '*', text_type_italic), expected_output)
+
+    def test_node_splitter_first_word(self):
+        unsplit_node = TextNode(text= '*This* is an italic text sample.', text_type=text_type_italic)
+        list_to_split = [unsplit_node]
+        expected_output = [
+                TextNode(text='This', text_type=text_type_italic),
+                TextNode(text=' is an italic text sample.', text_type=text_type_text),
+        ]
+
+        splits = split_nodes_delimiter(list_to_split, '*', text_type_italic)
+        print('\nBegin function test\n')
+        for node in splits:
+            print(node.__repr__())
+
+        print('\nEnd of function test\n')
+
+        for node in expected_output:
+            print(node.__repr__())
+            
+        self.assertEqual(split_nodes_delimiter(list_to_split, '*', text_type_italic), expected_output)
+
+
 if __name__ == "__main__":
     unittest.main()
-
-
-# Add some tests by adding methods to the TestTextNode class and using self.assertEqual to verify that the TextNode class works as expected.
-# Add even more tests (at least 3 in total) to check various edge cases, like when the url property is None, or when the text_type property is different. You'll want to make sure that when properties are different, the TextNode objects are not equal.
-# When you're satisfied that your class is behaving as expected, move on.
 
