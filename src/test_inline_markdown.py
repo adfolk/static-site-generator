@@ -61,3 +61,16 @@ class TestInlineMarkdownFuncs(unittest.TestCase):
         print(extract_markdown_links(text))
         # [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")]
 
+    def test_image_splitter_bi(self):
+        text = [TextNode(text="This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", text_type=text_type_text),]
+        print("\n************ START IMAGE SPLITTER BI OUTPUT ************\n")
+        print(split_nodes_image(text))
+        print("\n************ END IMAGE SPLITTER BI OUTPUT ************\n")
+
+    def test_image_splitter_multi(self):
+        text = [TextNode(text="This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif), an ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg), a ![cat meme](https://goatse.com/goatse.jpeg), and ![your mom](https://onlyfans.com/yourmom/yourmom.png), and here's the rest of the text too.", text_type=text_type_text),]
+
+        print("\n************ START IMAGE SPLITTER MULTI OUTPUT ************\n")
+        print(split_nodes_image(text))
+        print("\n************ END IMAGE SPLITTER MULTI OUTPUT ************\n")
+

@@ -1,4 +1,5 @@
 import re
+from typing import is_typeddict
 
 from textnode import (
     TextNode,
@@ -6,6 +7,8 @@ from textnode import (
     text_type_bold,
     text_type_italic,
     text_type_code,
+    text_type_link,
+    text_type_image,
 )
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -29,12 +32,56 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 def extract_markdown_images(text):
+    # this function returns a list of tuples of strings that match the pattern variable.
+    # if no matches are found, returns an empty list
     pattern = r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
     matches = re.findall(pattern, text)
     return matches
 
 
 def extract_markdown_links(text):
+    # this function returns a list of tuples of strings that match the pattern variable.
+    # if no matches are found, returns an empty list
     pattern = r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
     matches = re.findall(pattern, text)
     return matches
+
+def split_nodes_image(old_nodes):
+    def match_splitter(match_list, text):
+        split_nodes = []
+        for i in range(len(match_list)):
+            image = matches[i]
+            image_alt = image[0]
+            image_link = image[1]
+            section = text.split(f"![{image_alt}]({image_link})", 1)
+
+            if section[0] == '':
+                split_nodes.extend([
+                        TextNode(text=image_alt, text_type=text_type_image, url=image_link),
+                        TextNode(text=section[1], text_type=text_type_text),
+                ])
+
+            elif section[1] == '':
+                split_nodes.extend([
+                        TextNode(text=section[0], text_type=text_type_text),
+                        TextNode(text=image_alt, text_type=text_type_image, url=image_link),
+                ])
+
+            else:
+                split_nodes.extend([
+                        TextNode(text=section[0], text_type=text_type_text),
+                        TextNode(text=image_alt, text_type=text_type_image, url=image_link),
+                ])
+                text = section[1]
+
+        return split_nodes
+
+    new_nodes = []
+    for old_node in old_nodes:
+        matches = extract_markdown_images(old_node.text)
+        if matches == []:
+            new_nodes.append(old_node)
+            continue
+        new_nodes.extend(match_splitter(matches, old_node.text))
+        return new_nodes
+
