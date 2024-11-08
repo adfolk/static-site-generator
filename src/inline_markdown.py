@@ -56,23 +56,23 @@ def split_nodes_image(old_nodes):
             section = text.split(f"![{image_alt}]({image_link})", 1)
 
             if section[0] == '':
-                split_nodes.extend([
-                        TextNode(text=image_alt, text_type=text_type_image, url=image_link),
-                        TextNode(text=section[1], text_type=text_type_text),
-                ])
+                split_nodes.append(TextNode(text=image_alt, text_type=text_type_image, url=image_link))
 
-            elif section[1] == '':
-                split_nodes.extend([
-                        TextNode(text=section[0], text_type=text_type_text),
-                        TextNode(text=image_alt, text_type=text_type_image, url=image_link),
-                ])
+                if len(match_list) < 2:
+                    split_nodes.append(TextNode(text=section[1], text_type=text_type_text))
 
-            else:
-                split_nodes.extend([
-                        TextNode(text=section[0], text_type=text_type_text),
-                        TextNode(text=image_alt, text_type=text_type_image, url=image_link),
-                ])
                 text = section[1]
+                continue
+
+            split_nodes.extend([
+                TextNode(text=section[0], text_type=text_type_text),
+                TextNode(text=image_alt, text_type=text_type_image, url=image_link),
+            ])
+            
+            if i == (len(match_list) - 1) and section[1] != '':
+                split_nodes.append(TextNode(text=section[1], text_type=text_type_text))
+
+            text = section[1]
 
         return split_nodes
 
@@ -85,3 +85,41 @@ def split_nodes_image(old_nodes):
         new_nodes.extend(match_splitter(matches, old_node.text))
         return new_nodes
 
+def split_nodes_link(old_nodes):
+    def match_splitter(match_list, text):
+        split_nodes = []
+        for i in range(len(match_list)):
+            link = matches[i]
+            link_alt = link[0]
+            normal_link = link[1]
+            section = text.split(f"[{link_alt}]({normal_link})", 1)
+
+            if section[0] == '':
+                split_nodes.append(TextNode(text=link_alt, text_type=text_type_link, url=normal_link))
+
+                if len(match_list) < 2:
+                    split_nodes.append(TextNode(text=section[1], text_type=text_type_text))
+
+                text = section[1]
+                continue
+
+            split_nodes.extend([
+                TextNode(text=section[0], text_type=text_type_text),
+                TextNode(text=link_alt, text_type=text_type_image, url=normal_link),
+            ])
+            
+            if i == (len(match_list) - 1) and section[1] != '':
+                split_nodes.append(TextNode(text=section[1], text_type=text_type_text))
+
+            text = section[1]
+
+        return split_nodes
+
+    new_nodes = []
+    for old_node in old_nodes:
+        matches = extract_markdown_links(old_node.text)
+        if matches == []:
+            new_nodes.append(old_node)
+            continue
+        new_nodes.extend(match_splitter(matches, old_node.text))
+        return new_nodes
