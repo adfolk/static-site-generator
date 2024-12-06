@@ -11,7 +11,9 @@ from textnode import (
     text_type_image,
 )
 
-def split_nodes_delimiter(old_nodes, delimiter, text_type):
+def split_nodes_delimiter(old_nodes: list, delimiter: str, text_type):
+    # input: string, a char that will serve as the delimiter (e.g. *, `, etc), and a text_type variable.
+    # output: a list of TextNodes. The list will alternate nodes of type "text" with any nodes that matched the delimiter.
     new_nodes = []
     for old_node in old_nodes:
         if old_node.text_type != text_type_text:
@@ -123,3 +125,18 @@ def split_nodes_link(old_nodes):
             continue
         new_nodes.extend(match_splitter(matches, old_node.text))
         return new_nodes
+
+def text_to_text_nodes(input_text):
+    bold_delim = "**"
+    ital_delim = "*"
+    code_delim = "`"
+
+    unsplit_node = TextNode(text=input_text, text_type=text_type_text)
+    unsplit_list = [unsplit_node]
+    split_bold = split_nodes_delimiter(unsplit_list, bold_delim, text_type_bold)
+    split_ital = split_nodes_delimiter(split_bold, ital_delim, text_type_italic)
+    split_code = split_nodes_delimiter(split_ital, code_delim, text_type_code)
+    split_img = split_nodes_image(split_code)
+    split_final = split_nodes_link(split_img)
+    return split_final
+

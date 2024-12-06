@@ -179,3 +179,13 @@ class TestInlineMarkdownFuncs(unittest.TestCase):
         print("\n\n************ END LINK SPLITTER BOOKEND OUTPUT ************\n")
     # END ONLY
 
+    def test_interim_textstr_delimit_split(self):
+        text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        output = text_to_text_nodes(text)
+
+        print("\n************ START TEXT STRING DELIMITER SPLIT OUTPUT ************\n")
+        print(f"Input text: {text}\n")
+        for item in output:
+            print(item, "\n")
+        print("\n\n************ END TEXT STRING DELIMITER SPLIT OUTPUT ************\n") # END ONLY
+
