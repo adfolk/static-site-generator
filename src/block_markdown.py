@@ -64,6 +64,3 @@ def block_to_block_type(md_block):
 def markdown_to_html_node(markdown):
     pass
 
-def markdown_to_html_node(markdown):
-    pass
-

@@ -38,35 +38,32 @@ class TestBlockMarkdownFuncs(unittest.TestCase):
     def test_markdown_to_html_node(self):
         input = "# This is a heading\n\nThis is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n* This is the first list item in a list block\n* This is a list item\n* This is another list item"
 
-        expected_output = HTMLNode(
+        expected_output = ParentNode(
             tag='div',
             children = [
-                HTMLNode(
+                LeafNode(
                     tag='h1',
-                    value='This is a heading',
+                    value='This is a heading',),
+                ParentNode(
+                    tag='p',
                     children = [
-                        HTMLNode(
-                            tag='p',
-                            children = [
-                                LeafNode('This is a paragraph of text. It has some '),
-                                LeafNode('bold', tag='b'),
-                                LeafNode(' and '),
-                                LeafNode('italic', tag='i'),
-                            ]
-                        ),
-                        HTMLNode(
-                            tag='ul',
-                            children = [
-                                LeafNode('This is the first list item in a list block'),
-                                LeafNode('This is a list item'),
-                                LeafNode('This is another list item'),
-                            ]
-                        )
+                        LeafNode('This is a paragraph of text. It has some '),
+                        LeafNode('bold', tag='b'),
+                        LeafNode(' and '),
+                        LeafNode('italic', tag='i'),
+                        LeafNode(' words inside of it'),
+                    ]
+                ),
+                ParentNode(
+                    tag='ul',
+                    children = [
+                        LeafNode('This is the first list item in a list block'),
+                        LeafNode('This is a list item'),
+                        LeafNode('This is another list item'),
                     ]
                 )
             ]
         )
-        self.assertEqual(expected_output, markdown_to
 
-
+        self.assertEqual(expected_output, markdown_to_html_node(input))
 
