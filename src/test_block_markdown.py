@@ -57,9 +57,9 @@ class TestBlockMarkdownFuncs(unittest.TestCase):
                 ParentNode(
                     tag='ul',
                     children = [
-                        LeafNode('This is the first list item in a list block'),
-                        LeafNode('This is a list item'),
-                        LeafNode('This is another list item'),
+                        LeafNode('This is the first list item in a list block', tag='li'),
+                        LeafNode('This is a list item', tag='li'),
+                        LeafNode('This is another list item', tag='li'),
                     ]
                 )
             ]
