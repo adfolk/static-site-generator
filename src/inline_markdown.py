@@ -1,5 +1,4 @@
 import re
-from typing import is_typeddict
 
 from textnode import (
     TextNode,
