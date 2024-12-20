@@ -61,7 +61,3 @@ def block_to_block_type(md_block):
     else:
         return para_type
 
-def markdown_to_html_node(markdown):
-    
-
-
