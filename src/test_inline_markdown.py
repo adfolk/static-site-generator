@@ -22,18 +22,6 @@ class TestInlineMarkdownFuncs(unittest.TestCase):
                 TextNode(text=' was not italicized.', text_type=text_type_text),
         ]
 
-        #splits = split_nodes_delimiter(list_to_split, '*', text_type_italic)
-        #print('\nBegin multi italic function test\n')
-        #for node in splits:
-            #print(node.__repr__())
-
-        #print('\nEnd of multi italic function test\n')
-
-        #for node in expected_output:
-            #print(node.__repr__())
-
-
-
         self.assertEqual(split_nodes_delimiter(list_to_split, '*', text_type_italic), expected_output)
 
     def test_node_splitter_first_word(self):
@@ -43,149 +31,80 @@ class TestInlineMarkdownFuncs(unittest.TestCase):
                 TextNode(text='This', text_type=text_type_italic),
                 TextNode(text=' is an italic text sample.', text_type=text_type_text),
         ]
-
-        #splits = split_nodes_delimiter(list_to_split, '*', text_type_italic)
-        #print('\nBegin function test\n')
-        #for node in splits:
-        #    print(node.__repr__())
-
-        #print('\nEnd of function test\n')
-
-        #for node in expected_output:
-        #    print(node.__repr__())
             
         self.assertEqual(split_nodes_delimiter(list_to_split, '*', text_type_italic), expected_output)
 
     def test_image_extraction(self):
         text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
-        print(extract_markdown_images(text))
         # [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
+        pass
 
     def test_link_extraction(self):
         text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
-        print(extract_markdown_links(text))
         # [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")]
+        pass
 
     def test_image_splitter_middle(self):
         text = [TextNode(text="This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and nothing else.", text_type=text_type_text),]
-        print("\n************ START IMAGE SPLITTER MIDDLE OUTPUT ************\n")
-        print(f"Input text: {text}")
-        print(split_nodes_image(text))
-        print("\n************ END IMAGE SPLITTER MIDDLE OUTPUT ************\n")
+        pass
 
     def test_image_splitter_bi(self):
         text = [TextNode(text="This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", text_type=text_type_text),]
-        print("\n************ START IMAGE SPLITTER BI OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_image(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END IMAGE SPLITTER BI OUTPUT ************\n")
+        pass
 
     def test_image_splitter_multi(self):
         text = [TextNode(text="This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif), an ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg), a ![cat meme](https://goatse.com/goatse.jpeg), and ![your mom](https://onlyfans.com/yourmom/yourmom.png), and here's the rest of the text too.", text_type=text_type_text),]
-
-        print("\n************ START IMAGE SPLITTER MULTI OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_image(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END IMAGE SPLITTER MULTI OUTPUT ************\n")
+        pass
 
     def test_image_splitter_beginningAndEnd(self):
         text = [TextNode(text="![This text starts with a rick roll](https://i.imgur.com/aKaOqIh.gif), and it ends with an ![obi wan and no punctuation](https://i.imgur.com/fJRm4Vk.jpeg)", text_type=text_type_text),]
-
-        print("\n************ START IMAGE SPLITTER BOOKENDED OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_image(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END IMAGE SPLITTER BOOKENDED OUTPUT ************\n")
+        pass
 
     def test_image_splitter_beginningOnly(self):
         text = [TextNode(text="![This text starts with a rick roll](https://i.imgur.com/aKaOqIh.gif), and it ends with an ![obi wan meme](https://i.imgur.com/fJRm4Vk.jpeg), followed by closing text.", text_type=text_type_text),]
-
-        print("\n************ START IMAGE SPLITTER BEGINNING ONLY OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_image(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END IMAGE SPLITTER BEGINNING ONLY OUTPUT ************\n")
+        pass
 
     def test_image_splitter_endOnly(self):
         text = [TextNode(text="This text ends with an ![obi wan meme](https://i.imgur.com/fJRm4Vk.jpeg)", text_type=text_type_text),]
-
-        print("\n************ START IMAGE SPLITTER END ONLY OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_image(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END IMAGE SPLITTER END ONLY OUTPUT ************\n")
+        pass
 
-    # Test Link Splitter
-
-    # MIDDLE
     def test_link_splitter_middle(self):
         text = [TextNode(text=f"This text has an {imgur} link and nothing else", text_type=text_type_text),]
-
-        print("\n************ START LINK SPLITTER MIDDLE OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_link(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END LINK SPLITTER MIDDLE OUTPUT ************\n")
+        pass
 
-    # BI
     def test_link_splitter_bi(self):
         text = [TextNode(text=f"This text has an {imgur} link and a {wikipedia} link", text_type=text_type_text),]
-
-        print("\n************ START LINK SPLITTER BI OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_link(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END LINK SPLITTER BI OUTPUT ************\n")
+        pass
 
-    # TRI
     def test_link_splitter_tri(self):
         text = [TextNode(text=f"This text has an {imgur} link, a {wikipedia} link, and a {reddit} link", text_type=text_type_text),]
-
-        print("\n************ START LINK SPLITTER TRI OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_link(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END LINK SPLITTER TRI OUTPUT ************\n")
+        pass
 
-    # BOOKENDED
     def test_link_splitter_bookended(self):
         text = [TextNode(text=f"{imgur} starts this text, and at the end is a link to {wikipedia}", text_type=text_type_text),]
-
-        print("\n************ START LINK SPLITTER BOOKEND OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_link(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END LINK SPLITTER BOOKEND OUTPUT ************\n")
-    # BEGINNING ONLY
+        pass
+
     def test_link_splitter_beginning(self):
         text = [TextNode(text=f"{imgur} starts this text", text_type=text_type_text),]
-
-        print("\n************ START LINK SPLITTER BEGINNING OUTPUT ************\n")
-        print(f"Input text: {text}\n")
         output = split_nodes_link(text)
-        for object in output:
-            print(object)
-        print("\n\n************ END LINK SPLITTER BOOKEND OUTPUT ************\n")
-    # END ONLY
+        pass
 
     def test_interim_textstr_delimit_split(self):
         text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
         output = text_to_text_nodes(text)
+        pass
 
-        print("\n************ START TEXT STRING DELIMITER SPLIT OUTPUT ************\n")
-        print(f"Input text: {text}\n")
-        for item in output:
-            print(item, "\n")
-        print("\n\n************ END TEXT STRING DELIMITER SPLIT OUTPUT ************\n") # END ONLY
+    def test_plain_text_textToTextNodes(self):
+        text = "This is just a string of text."
+        expected_output = [TextNode("This is just a string of text.", text_type_text)]
+        self.assertEqual(text_to_text_nodes(text), expected_output)
 

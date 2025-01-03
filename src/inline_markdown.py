@@ -10,7 +10,7 @@ from textnode import (
     text_type_image,
 )
 
-def split_nodes_delimiter(old_nodes: list, delimiter: str, text_type):
+def split_nodes_delimiter(old_nodes: list, delimiter: str, text_type: str):
     # input: string, a char that will serve as the delimiter (e.g. *, `, etc), and a text_type variable.
     # output: a list of TextNodes. The list will alternate nodes of type "text" with any nodes that matched the delimiter.
     new_nodes = []
@@ -32,7 +32,7 @@ def split_nodes_delimiter(old_nodes: list, delimiter: str, text_type):
         new_nodes.extend(split_nodes)
     return new_nodes
 
-def extract_markdown_images(text):
+def extract_markdown_images(text: str):
     # this function returns a list of tuples of strings that match the pattern variable.
     # if no matches are found, returns an empty list
     pattern = r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
@@ -40,14 +40,14 @@ def extract_markdown_images(text):
     return matches
 
 
-def extract_markdown_links(text):
+def extract_markdown_links(text: str):
     # this function returns a list of tuples of strings that match the pattern variable.
     # if no matches are found, returns an empty list
     pattern = r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
     matches = re.findall(pattern, text)
     return matches
 
-def split_nodes_image(old_nodes):
+def split_nodes_image(old_nodes: list):
     def match_splitter(match_list, text):
         split_nodes = []
         for i in range(len(match_list)):
@@ -86,7 +86,7 @@ def split_nodes_image(old_nodes):
         new_nodes.extend(match_splitter(matches, old_node.text))
         return new_nodes
 
-def split_nodes_link(old_nodes):
+def split_nodes_link(old_nodes: list):
     def match_splitter(match_list, text):
         split_nodes = []
         for i in range(len(match_list)):
@@ -125,7 +125,7 @@ def split_nodes_link(old_nodes):
         new_nodes.extend(match_splitter(matches, old_node.text))
         return new_nodes
 
-def text_to_text_nodes(input_text):
+def text_to_text_nodes(input_text: str):
     bold_delim = "**"
     ital_delim = "*"
     code_delim = "`"
@@ -136,6 +136,11 @@ def text_to_text_nodes(input_text):
     split_ital = split_nodes_delimiter(split_bold, ital_delim, text_type_italic)
     split_code = split_nodes_delimiter(split_ital, code_delim, text_type_code)
     split_img = split_nodes_image(split_code)
+    if split_img == None:
+        split_lnk = split_nodes_link(split_code)
+        if split_lnk == None:
+            return split_code
+        return split_lnk
     split_final = split_nodes_link(split_img)
     return split_final
 

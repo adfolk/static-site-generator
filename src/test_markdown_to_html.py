@@ -1,6 +1,19 @@
 import unittest
 from markdown_to_html import *
 
+mixed_type_para_line_md = 'The second paragraph has some **bold**, *italic*, and `inline code` text.'
+
+mixed_type_para_line_children = [
+        LeafNode('The second paragraph has some ', None),
+        LeafNode('bold', 'b'),
+        LeafNode(', ', None),
+        LeafNode('italic', 'i'),
+        LeafNode(', and ', None),
+        LeafNode('inline code', 'code'),
+        LeafNode(' text.', None)
+        ]
+
+
 text_only_para_doc_md = '''
 This markdown doc is plain text.
 
@@ -62,3 +75,10 @@ class TestMarkdownToHTML(unittest.TestCase):
         #self.assertEqual(markdown_to_html(mixed_para_doc_md), )
     def test_text_to_children(self):
         self.assertEqual(text_to_children(text_only_para_doc_md), None)
+
+    def test_text_to_children_mixed_para_line(self):
+        output = text_to_children(mixed_type_para_line_md)
+        for i in range(len(output)):
+            self.assertEqual(output[i].value, mixed_type_para_line_children[i].value)
+            self.assertEqual(output[i].tag, mixed_type_para_line_children[i].tag)
+
