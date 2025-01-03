@@ -7,7 +7,8 @@ ul_type= 'unordered_list'
 ol_type = 'ordered_list'
 para_type = 'paragraph'
 
-def markdown_to_blocks(markdown):
+def markdown_to_blocks(markdown: str):
+    # Takes an entire markdown doc as a string and eturns a list of strings, each of which represents a unique block of markdown (ex headers, paras, etc)
     raw_split = markdown.split('\n\n')
     clean_blocks = []
 

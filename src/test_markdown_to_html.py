@@ -1,6 +1,36 @@
 import unittest
 from markdown_to_html import *
 
+full_md_doc = "# This is a heading\n\nThis is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n* This is the first list item in a list block\n* This is a list item\n* This is another list item"
+
+full_htmlnode_doc = ParentNode(
+    tag='div',
+    children = [
+        LeafNode(
+            tag='h1',
+            value='This is a heading',),
+        ParentNode(
+            tag='p',
+            children = [
+                LeafNode('This is a paragraph of text. It has some '),
+                LeafNode('bold', tag='b'),
+                LeafNode(' and '),
+                LeafNode('italic', tag='i'),
+                LeafNode(' words inside of it'),
+            ]
+        ),
+        ParentNode(
+            tag='ul',
+            children = [
+                LeafNode('This is the first list item in a list block', tag='li'),
+                LeafNode('This is a list item', tag='li'),
+                LeafNode('This is another list item', tag='li'),
+            ]
+        )
+    ]
+)
+code_line_md = '`This is just a line of code`'
+
 mixed_type_para_line_md = 'The second paragraph has some **bold**, *italic*, and `inline code` text.'
 
 mixed_type_para_line_children = [
@@ -81,4 +111,11 @@ class TestMarkdownToHTML(unittest.TestCase):
         for i in range(len(output)):
             self.assertEqual(output[i].value, mixed_type_para_line_children[i].value)
             self.assertEqual(output[i].tag, mixed_type_para_line_children[i].tag)
+
+    def test_text_to_children_codeLine(self):
+        self.assertEqual(text_to_children(code_line_md), None)
+
+    def test_markdown_to_html_header(self):
+        header = '### Basic ass h3 header'
+        expected_output = 
 

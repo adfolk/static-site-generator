@@ -9,7 +9,16 @@ class TestBlockMarkdownFuncs(unittest.TestCase):
         print("#### test markdown to blocks ####")
         print(markdown_to_blocks(input))
 
-    #TODO: 1) multiple newline characters of even and odd numbers
+    def test_markdown_to_blocks_code(self):
+        md_code_block = '''
+            ```\n
+            # This is a hello world script in Python.\n
+            my_first_var = "Hello, world!"\n
+            print(my_first_var)\n
+            ```
+            '''
+        print(markdown_to_blocks(md_code_block))
+
     def test_markdown_to_blocks_multiple_spaces(self):
         input = "# This is a heading\n\n\nThis is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n\n\n* This is the first list item in a list block\n* This is a list item\n* This is another list item"
         print("#### test markdown blocks multi ####")
@@ -34,36 +43,4 @@ class TestBlockMarkdownFuncs(unittest.TestCase):
     def test_block_type_ordered_list(self):
         input = "1. list item 1\n2. list item 2\n3. list item 3"
         self.assertEqual(block_to_block_type(input), 'ordered_list')
-
-    def test_markdown_to_html_node(self):
-        input = "# This is a heading\n\nThis is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n* This is the first list item in a list block\n* This is a list item\n* This is another list item"
-
-        expected_output = ParentNode(
-            tag='div',
-            children = [
-                LeafNode(
-                    tag='h1',
-                    value='This is a heading',),
-                ParentNode(
-                    tag='p',
-                    children = [
-                        LeafNode('This is a paragraph of text. It has some '),
-                        LeafNode('bold', tag='b'),
-                        LeafNode(' and '),
-                        LeafNode('italic', tag='i'),
-                        LeafNode(' words inside of it'),
-                    ]
-                ),
-                ParentNode(
-                    tag='ul',
-                    children = [
-                        LeafNode('This is the first list item in a list block', tag='li'),
-                        LeafNode('This is a list item', tag='li'),
-                        LeafNode('This is another list item', tag='li'),
-                    ]
-                )
-            ]
-        )
-
-        self.assertEqual(expected_output, markdown_to_html_node(input))
 
