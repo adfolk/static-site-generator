@@ -93,8 +93,16 @@ This is a paragraph of text. It has **bold** and *italic* text.
 # This is a code block of python:
 print("Hello, world!")
 ```
-
 '''
+
+code_block_md = '''
+```
+# This is a code block of python:
+print("Hello, world!")
+```
+'''
+
+formatted_header = "## Header with some **bold** text. How's that, retard?\n\n### This header has nothing going on."
 
 class TestMarkdownToHTML(unittest.TestCase):
     def test_get_header_lvl(self):
@@ -104,7 +112,8 @@ class TestMarkdownToHTML(unittest.TestCase):
     #def test_markdown_to_html(self):
         #self.assertEqual(markdown_to_html(mixed_para_doc_md), )
     def test_text_to_children(self):
-        self.assertEqual(text_to_children(text_only_para_doc_md), None)
+        #self.assertEqual(text_to_children(text_only_para_doc_md), None)
+        pass
 
     def test_text_to_children_mixed_para_line(self):
         output = text_to_children(mixed_type_para_line_md)
@@ -113,9 +122,21 @@ class TestMarkdownToHTML(unittest.TestCase):
             self.assertEqual(output[i].tag, mixed_type_para_line_children[i].tag)
 
     def test_text_to_children_codeLine(self):
-        self.assertEqual(text_to_children(code_line_md), None)
+        pass
+        #self.assertEqual(text_to_children(code_line_md), None)
 
     def test_markdown_to_html_header(self):
         header = '### Basic ass h3 header'
-        expected_output = 
+        #expected_output = 
+        print(markdown_to_html(header))
+        print('\n')
+
+    def test_markdown_to_html_codeblock(self):
+        output = markdown_to_html(code_block_md)
+        for i in output:
+            print(i, '\n')
+
+    def test_markdown_to_html_formatted_header(self):
+        output = markdown_to_html(formatted_header)
+        print('\n', output, '\n')
 

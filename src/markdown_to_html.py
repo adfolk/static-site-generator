@@ -1,11 +1,7 @@
-import functools
 from htmlnode import *
 from textnode import *
 from inline_markdown import *
 from block_markdown import *
-
-def concatenate(accumulator: str, string: str):
-    return accumulator + string + " "
 
 def get_header_lvl(md_line: str):
 # Returns the html tag name of a header level as a string, e.g., 'h1', 'h3', 'h6', etc.
@@ -15,16 +11,12 @@ def get_header_lvl(md_line: str):
     return f'h{num_hashes}'
 
 def text_to_children(text: str):
-# Takes in a string of markdown text and outputs a list of LeafNodes broken down by inline text type.
-# If a plain block is encountered, this function should simply return None.
-# When iterating over a list of markdown blocks, remember that if this function returns None, it is because the block should be a LeafNode and must be converted to one outside separately.
+# Takes in a string of markdown text and returns a list of leaf nodes. If multiple nodes are returned, these should be assigned to a parent node.
     text_nodes = text_to_text_nodes(text)
     html_nodes = []
     for i in text_nodes:
         node = text_node_to_html_node(i)
         html_nodes.append(node)
-    if len(html_nodes) < 2:
-        return None
     return html_nodes
 
 def markdown_to_html(md_doc: str):
@@ -36,7 +28,28 @@ def markdown_to_html(md_doc: str):
     for i in range(blen):
         block = blocks[i]
         if block_types[i] == code_type:
-            txt = functools.reduce(concatenate, block[1:(blen - 1)]).strip()
+            # Assume only plain text inside code blocks
+            txt = block.strip('```').strip()
             html_nodes.append(LeafNode(txt, 'code'))
+
         if block_types[i] == heading_type:
             header = get_header_lvl(block)
+            split_header = block.split('# ', 1)
+            header_txt = split_header[1]
+            offspring = text_to_children(header_txt)
+            if len(offspring) > 1:
+                parent_header = ParentNode(children=offspring, tag=header)
+                html_nodes.append(parent_header)
+            if len(offspring) == 1:
+                offspring[0].tag = header
+                html_nodes.append(offspring[0])
+
+        if block_types[i] == quote_type:
+            cleaned_quote = block.replace('> ', '')
+            offspring = text_to_children(cleaned_quote)
+            quote_block = ParentNode(children=offspring, tag='quote')
+            html_nodes.append(quote_block)
+            # TODO: write tests for quote blocks
+
+    return html_nodes
+

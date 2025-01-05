@@ -10,14 +10,21 @@ class TestBlockMarkdownFuncs(unittest.TestCase):
         print(markdown_to_blocks(input))
 
     def test_markdown_to_blocks_code(self):
-        md_code_block = '''
-            ```\n
-            # This is a hello world script in Python.\n
-            my_first_var = "Hello, world!"\n
-            print(my_first_var)\n
+        code_block_md = '''
             ```
-            '''
-        print(markdown_to_blocks(md_code_block))
+            # This is a code block of python:
+            print("Hello, world!")
+            ```
+        '''
+
+        md_code_block = '''
+            ```
+            # This is a hello world script in Python.
+            my_first_var = "Hello, world!"
+            print(my_first_var)
+            ```
+        '''
+        print(markdown_to_blocks(code_block_md))
 
     def test_markdown_to_blocks_multiple_spaces(self):
         input = "# This is a heading\n\n\nThis is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n\n\n* This is the first list item in a list block\n* This is a list item\n* This is another list item"

@@ -13,8 +13,10 @@ def markdown_to_blocks(markdown: str):
     clean_blocks = []
 
     for item in raw_split:
-        if item != '':
-            clean_blocks.append(item.strip())
+        if item == "":
+            continue
+        block = item.strip()
+        clean_blocks.append(block)
 
     return clean_blocks
 
