@@ -102,7 +102,23 @@ print("Hello, world!")
 ```
 '''
 
-formatted_header = "## Header with some **bold** text. How's that, retard?\n\n### This header has nothing going on."
+formatted_header = "## Header with some **bold** text.\n\n### This header has nothing going on."
+
+quote_block_md = '''
+    ### Header block
+
+    > First line
+    > Second line
+    > Third line
+    > Fourth line
+    '''
+ul_block_md = '''
+    # Header block
+
+    * item 1
+    * item 2
+    * item 3
+    '''
 
 class TestMarkdownToHTML(unittest.TestCase):
     def test_get_header_lvl(self):
@@ -128,15 +144,26 @@ class TestMarkdownToHTML(unittest.TestCase):
     def test_markdown_to_html_header(self):
         header = '### Basic ass h3 header'
         #expected_output = 
-        print(markdown_to_html(header))
-        print('\n')
+        #print(markdown_to_html(header))
+        #print('\n')
+        pass
 
     def test_markdown_to_html_codeblock(self):
         output = markdown_to_html(code_block_md)
-        for i in output:
-            print(i, '\n')
+        #for i in output:
+            #print(i, '\n')
+        pass
 
     def test_markdown_to_html_formatted_header(self):
         output = markdown_to_html(formatted_header)
+        #print('\n', output, '\n')
+        pass
+
+    def test_markdown_to_html_quoteblock(self):
+        output = markdown_to_html(quote_block_md)
+        print('\n', output, '\n')
+
+    def test_markdown_to_html_ul(self):
+        output = markdown_to_html(ul_block_md)
         print('\n', output, '\n')
 

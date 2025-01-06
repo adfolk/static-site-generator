@@ -1,4 +1,4 @@
-from htmlnode import *
+from htmlnode import ParentNode, LeafNode
 from textnode import *
 from inline_markdown import *
 from block_markdown import *
@@ -47,9 +47,15 @@ def markdown_to_html(md_doc: str):
         if block_types[i] == quote_type:
             cleaned_quote = block.replace('> ', '')
             offspring = text_to_children(cleaned_quote)
-            quote_block = ParentNode(children=offspring, tag='quote')
+            quote_block = ParentNode(children=offspring, tag='blockquote')
             html_nodes.append(quote_block)
-            # TODO: write tests for quote blocks
+
+        if block_types[i] == ul_type:
+            # TODO: split ul block into lines
+            cleaned_quote = block.replace('* ', '')
+            offspring = text_to_children(cleaned_quote)
+            ul_block = ParentNode(children=offspring, tag='ul')
+            html_nodes.append(ul_block)
 
     return html_nodes
 
