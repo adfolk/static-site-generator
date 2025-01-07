@@ -1,48 +1,6 @@
 import unittest
 from markdown_to_html import *
 
-full_md_doc = "# This is a heading\n\nThis is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n* This is the first list item in a list block\n* This is a list item\n* This is another list item"
-
-full_htmlnode_doc = ParentNode(
-    tag='div',
-    children = [
-        LeafNode(
-            tag='h1',
-            value='This is a heading',),
-        ParentNode(
-            tag='p',
-            children = [
-                LeafNode('This is a paragraph of text. It has some '),
-                LeafNode('bold', tag='b'),
-                LeafNode(' and '),
-                LeafNode('italic', tag='i'),
-                LeafNode(' words inside of it'),
-            ]
-        ),
-        ParentNode(
-            tag='ul',
-            children = [
-                LeafNode('This is the first list item in a list block', tag='li'),
-                LeafNode('This is a list item', tag='li'),
-                LeafNode('This is another list item', tag='li'),
-            ]
-        )
-    ]
-)
-code_line_md = '`This is just a line of code`'
-
-mixed_type_para_line_md = 'The second paragraph has some **bold**, *italic*, and `inline code` text.'
-
-mixed_type_para_line_children = [
-        LeafNode('The second paragraph has some ', None),
-        LeafNode('bold', 'b'),
-        LeafNode(', ', None),
-        LeafNode('italic', 'i'),
-        LeafNode(', and ', None),
-        LeafNode('inline code', 'code'),
-        LeafNode(' text.', None)
-        ]
-
 
 text_only_para_doc_md = '''
 This markdown doc is plain text.
@@ -52,11 +10,7 @@ But it does have multiple paragraphs.
 Like this one.
 '''
 
-text_only_para_doc_html_nodes = [
-        LeafNode('This markdown doc is plain text.', tag='p'),
-        LeafNode('But it does have multiple paragraphs.', tag='p'),
-        LeafNode('Like this one.', tag='p')
-        ]
+text_only_para_doc_html = "<div><p>This markdown doc is plain text.</p><p>But it does have multiple paragraphs.</p><p>Like this one.</p></div>"
 
 mixed_para_doc_md = '''
 This markdown doc consists solely of paragraphs.
@@ -84,7 +38,7 @@ mixed_para_doc_html_nodes = [
         LeafNode('The third paragraph is text again.')
     ]
 
-complex_doc_md = '''
+mixed_doc_md = '''
 ### This is the header
 
 This is a paragraph of text. It has **bold** and *italic* text.
@@ -101,6 +55,7 @@ code_block_md = '''
 print("Hello, world!")
 ```
 '''
+code_block_html = '<div><code># This is a code block of python:\nprint("Hello, world!")</code></div>'
 
 formatted_header = "## Header with some **bold** text.\n\n### This header has nothing going on."
 
@@ -139,23 +94,12 @@ para_block_md = '''
 
     Then there's this third paragraph. It doesn't say much.
     '''
+para_block_html = "<div><h6>smol header</h6><p>This is a paragraph</p><p>This one has <b>some really strong</b> text in it. Plus, some <i>really Italian</i> text.</p><p>Then there's this third paragraph. It doesn't say much.</p></div>"
 
 class TestMarkdownToHTML(unittest.TestCase):
     def test_get_header_lvl(self):
         header = '#### This header has an "#" in it'
         self.assertEqual(get_header_lvl(header), 'h4')
-
-    #def test_markdown_to_html(self):
-        #self.assertEqual(markdown_to_html(mixed_para_doc_md), )
-    def test_text_to_children(self):
-        #self.assertEqual(text_to_children(text_only_para_doc_md), None)
-        pass
-
-    def test_text_to_children_mixed_para_line(self):
-        output = text_to_children(mixed_type_para_line_md)
-        for i in range(len(output)):
-            self.assertEqual(output[i].value, mixed_type_para_line_children[i].value)
-            self.assertEqual(output[i].tag, mixed_type_para_line_children[i].tag)
 
     def test_text_to_children_codeLine(self):
         pass
@@ -163,16 +107,13 @@ class TestMarkdownToHTML(unittest.TestCase):
 
     def test_markdown_to_html_header(self):
         header = '### Basic ass h3 header'
-        #expected_output = 
-        #print(markdown_to_html(header))
-        #print('\n')
-        pass
+        expected_output = '<div><h3>Basic ass h3 header</h3></div>'
+        header_node = markdown_to_html(header)
+        self.assertEqual(header_node.to_html(), expected_output)
 
     def test_markdown_to_html_codeblock(self):
         output = markdown_to_html(code_block_md)
-        #for i in output:
-            #print(i, '\n')
-        pass
+        self.assertEqual(output.to_html(), code_block_html)
 
     def test_markdown_to_html_formatted_header(self):
         output = markdown_to_html(formatted_header)
@@ -192,7 +133,7 @@ class TestMarkdownToHTML(unittest.TestCase):
         print('\n', output, '\n')
 
     def test_markdown_to_html_paras(self):
-        #output = markdown_to_blocks(para_block_md)
         output = markdown_to_html(para_block_md)
-        print('\n', output, '\n')
+        self.assertEqual(output.to_html(), para_block_html)
+        #print(output.to_html())
 

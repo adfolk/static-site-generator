@@ -1,5 +1,3 @@
-from re import sub
-from types import new_class
 from htmlnode import ParentNode, LeafNode
 from textnode import *
 from inline_markdown import *
