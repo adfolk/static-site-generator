@@ -26,6 +26,18 @@ class TestBlockMarkdownFuncs(unittest.TestCase):
         '''
         print(markdown_to_blocks(code_block_md))
 
+    def test_markdown_to_blocks_plain_paras(self):
+        para_only_md = '''
+            This is a paragraph.
+
+            This is also just a paragraph.
+
+            What does the output look like?
+            '''
+
+        print("### Test Plain Paragraphs ###\n")
+        print(markdown_to_blocks(para_only_md))
+
     def test_markdown_to_blocks_multiple_spaces(self):
         input = "# This is a heading\n\n\nThis is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n\n\n* This is the first list item in a list block\n* This is a list item\n* This is another list item"
         print("#### test markdown blocks multi ####")

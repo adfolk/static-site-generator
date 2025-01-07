@@ -50,8 +50,8 @@ This markdown doc is plain text.
 But it does have multiple paragraphs.
 
 Like this one.
-
 '''
+
 text_only_para_doc_html_nodes = [
         LeafNode('This markdown doc is plain text.', tag='p'),
         LeafNode('But it does have multiple paragraphs.', tag='p'),
@@ -120,6 +120,26 @@ ul_block_md = '''
     * item 3
     '''
 
+ol_block_md = '''
+    ## header
+
+    1. first item
+    2. item 2
+    3. item 3
+    4. fourth
+    5. fiff
+    '''
+
+para_block_md = '''
+    ###### smol header
+
+    This is a paragraph
+
+    This one has **some really strong** text in it. Plus, some *really Italian* text.
+
+    Then there's this third paragraph. It doesn't say much.
+    '''
+
 class TestMarkdownToHTML(unittest.TestCase):
     def test_get_header_lvl(self):
         header = '#### This header has an "#" in it'
@@ -165,5 +185,14 @@ class TestMarkdownToHTML(unittest.TestCase):
 
     def test_markdown_to_html_ul(self):
         output = markdown_to_html(ul_block_md)
+        print('\n', output, '\n')
+
+    def test_markdown_to_html_ol(self):
+        output = markdown_to_html(ol_block_md)
+        print('\n', output, '\n')
+
+    def test_markdown_to_html_paras(self):
+        #output = markdown_to_blocks(para_block_md)
+        output = markdown_to_html(para_block_md)
         print('\n', output, '\n')
 

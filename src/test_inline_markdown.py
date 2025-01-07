@@ -6,6 +6,16 @@ wikipedia = "[wikipedia](https://wikipedia.com)"
 reddit = "[reddit](https://reddit.com)"
 fourChan = "[4chan](https://4chan.com)"
 
+para_block_md = '''
+    ###### smol header
+
+    This is a paragraph
+
+    This one has **some really strong** text in it. Plus, some *really Italian* text.
+
+    Then there's this third paragraph. It doesn't say much.
+    '''
+
 class TestInlineMarkdownFuncs(unittest.TestCase):
     def test_node_splitter(self):
         unsplit_node = TextNode(text= 'This is an *italic* text *sample* with *too many* italics. Ironically, *italics* was not italicized.', text_type=text_type_text)
@@ -107,4 +117,8 @@ class TestInlineMarkdownFuncs(unittest.TestCase):
         text = "This is just a string of text."
         expected_output = [TextNode("This is just a string of text.", text_type_text)]
         self.assertEqual(text_to_text_nodes(text), expected_output)
+
+    def test_problem_child(self):
+        output = text_to_text_nodes(para_block_md)
+        print(output)
 

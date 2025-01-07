@@ -1,3 +1,5 @@
+from re import sub
+from types import new_class
 from htmlnode import ParentNode, LeafNode
 from textnode import *
 from inline_markdown import *
@@ -51,11 +53,50 @@ def markdown_to_html(md_doc: str):
             html_nodes.append(quote_block)
 
         if block_types[i] == ul_type:
-            # TODO: split ul block into lines
-            cleaned_quote = block.replace('* ', '')
-            offspring = text_to_children(cleaned_quote)
-            ul_block = ParentNode(children=offspring, tag='ul')
-            html_nodes.append(ul_block)
+            if block.startswith('- '):
+                cleaned_ul_block = block.split('- ')
+            else:
+                cleaned_ul_block = block.split('* ')
+            cleaned_ul_block.remove('')
+            offspring = []
+            for line in cleaned_ul_block:
+                sub_children = text_to_children(line)
+                if len(sub_children) > 1:
+                    child_parent =ParentNode(children=sub_children, tag='li')
+                    offspring.append(child_parent)
+                else:
+                    sub_children[0].tag = 'li'
+                    offspring.append(sub_children[0])
+            ul_html_node = ParentNode(children=offspring, tag='ul')
+            html_nodes.append(ul_html_node)
 
-    return html_nodes
+        if block_types[i] == ol_type:
+            ol_lines = block.split('. ')
+            cleaned_ol_lines = []
+            for line in ol_lines[1:-1]:
+                new_line = line[:-1]
+                cleaned_ol_lines.append(new_line)
+            cleaned_ol_lines.append(ol_lines[-1])
+            offspring = []
+            for ol_line in cleaned_ol_lines:
+                sub_children = text_to_children(ol_line)
+                if len(sub_children) > 1:
+                    child_parent =ParentNode(children=sub_children, tag='li')
+                    offspring.append(child_parent)
+                else:
+                    sub_children[0].tag = 'li'
+                    offspring.append(sub_children[0])
+            ol_html_node = ParentNode(children=offspring, tag='ol')
+            html_nodes.append(ol_html_node)
+
+        if block_types[i] == para_type:
+                offspring = text_to_children(block)
+                if len(offspring) > 1:
+                    parent_para = ParentNode(children=offspring, tag='p')
+                    html_nodes.append(parent_para)
+                else:
+                    offspring[0].tag = 'p'
+                    html_nodes.append(offspring[0])
+
+    return ParentNode(children=html_nodes, tag='div')
 
