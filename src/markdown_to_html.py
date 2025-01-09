@@ -58,7 +58,8 @@ def markdown_to_html(md_doc: str):
             cleaned_ul_block.remove('')
             offspring = []
             for line in cleaned_ul_block:
-                sub_children = text_to_children(line)
+                clean_line = line.rstrip('\n')
+                sub_children = text_to_children(clean_line)
                 if len(sub_children) > 1:
                     child_parent =ParentNode(children=sub_children, tag='li')
                     offspring.append(child_parent)
@@ -77,7 +78,8 @@ def markdown_to_html(md_doc: str):
             cleaned_ol_lines.append(ol_lines[-1])
             offspring = []
             for ol_line in cleaned_ol_lines:
-                sub_children = text_to_children(ol_line)
+                clean_ol_line = ol_line.rstrip('\n')
+                sub_children = text_to_children(clean_ol_line)
                 if len(sub_children) > 1:
                     child_parent =ParentNode(children=sub_children, tag='li')
                     offspring.append(child_parent)

@@ -106,7 +106,7 @@ def split_nodes_link(old_nodes: list):
 
             split_nodes.extend([
                 TextNode(text=section[0], text_type=text_type_text),
-                TextNode(text=link_alt, text_type=text_type_image, url=normal_link),
+                TextNode(text=link_alt, text_type=text_type_link, url=normal_link),
             ])
             
             if i == (len(match_list) - 1) and section[1] != '':

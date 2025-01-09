@@ -48,7 +48,7 @@ def text_node_to_html_node(text_node):
         return LeafNode(tag="code", value=text_node.text)
 
     # Link leaf node
-    if text_node.text_type == text_type_code:
+    if text_node.text_type == text_type_link:
         props = {'href': text_node.url}
         return LeafNode(tag="a", value=text_node.text, props=props)
 

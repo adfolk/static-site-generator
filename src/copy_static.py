@@ -6,6 +6,7 @@ def copy_dir_to_new_dir(rel_src_dir_path: str, relative_dest_dir_path: str):
         shutil.rmtree(relative_dest_dir_path)
     os.mkdir(relative_dest_dir_path)
 
+
     dir_raw_contents = os.listdir(rel_src_dir_path)
     dir_content_paths = []
     for thing in dir_raw_contents:

@@ -122,3 +122,9 @@ class TestInlineMarkdownFuncs(unittest.TestCase):
         output = text_to_text_nodes(para_block_md)
         print(output)
 
+    def test_link_regex(self):
+        md_text = "**I like Tolkien**. Read my [first post here](/majesty) (sorry the link doesn't work yet)"
+        text_node = [TextNode(text=md_text, text_type=text_type_text)]
+        output = split_nodes_link(text_node)
+        print("\n", output, "\n")
+
