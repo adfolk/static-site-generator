@@ -24,7 +24,3 @@ def copy_dir_to_new_dir(rel_src_dir_path: str, relative_dest_dir_path: str):
 
     return 0
 
-# Delete all contents of the ~/Public/ folder first
-def remove_dir(target_dir):
-    shutil.rmtree(path=target_dir)
-

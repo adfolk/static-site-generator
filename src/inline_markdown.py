@@ -142,5 +142,7 @@ def text_to_text_nodes(input_text: str):
             return split_code
         return split_lnk
     split_final = split_nodes_link(split_img)
+    if split_final == None:
+        return split_img
     return split_final
 

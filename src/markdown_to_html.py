@@ -90,13 +90,13 @@ def markdown_to_html(md_doc: str):
             html_nodes.append(ol_html_node)
 
         if block_types[i] == para_type:
-                offspring = text_to_children(block)
-                if len(offspring) > 1:
-                    parent_para = ParentNode(children=offspring, tag='p')
-                    html_nodes.append(parent_para)
-                else:
-                    offspring[0].tag = 'p'
-                    html_nodes.append(offspring[0])
+            offspring = text_to_children(block)
+            if len(offspring) > 1:
+                parent_para = ParentNode(children=offspring, tag='p')
+                html_nodes.append(parent_para)
+            else:
+                offspring[0].tag = 'p'
+                html_nodes.append(offspring[0])
 
     return ParentNode(children=html_nodes, tag='div')
 
